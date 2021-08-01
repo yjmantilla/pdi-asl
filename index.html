@@ -1,0 +1,68 @@
+<!-----------------------------------------------------------------------------------------------
+//----------------------------------%TITULO%----------------------------------------
+//-----------------------------------------------------------------------------------------------
+//-------------Alexis Rafael del Carmen Ávila Ortiz--------CC 1083555169-------------------------
+//------------ alexis.avila@udea.edu.co--------------------Wpp +57 305 2230574-------------------
+//-----------------------------------------------------------------------------------------------
+//-------------Yorguin José Mantilla Ramos-----------------CC 1127617499-------------------------
+//-------------yorguinj.mantilla@udea.edu.co---------------Wpp +57 311 5154452-------------------
+//-----------------------------------------------------------------------------------------------
+//----------------------Estudiantes Facultad de Ingenieria  -------------------------------------
+//--------Curso Básico de Procesamiento de Imágenes y Visión Artificial--------------------------
+//---------------------------Agosto de 2021-------------------------------------------------------
+//---------------------------------------------------------------------------------------------->
+
+<!DOCTYPE html>                                 <!-- Declaración del tipo de documento -->
+<html>                                          <!-- Inicio del html -->
+<head>                                          <!-- Encabezado del html. Define metadatos del documento. -->
+    <meta charset="utf-8">                      <!-- Codificación de los carácteres -->
+    <meta name="description" content="ASL"> <!-- Descripción del documento -->
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">  <!-- Propiedades de Visualización -->
+    <title>ASL</title>                     <!-- Título del documento -->
+</head>
+
+<body>
+
+<!-- ---------------------------------------------------------------------------------------- -->
+<!-- -----------------------Elementos html para la selección de la cámara-------------------- -->
+<!-- ---------------------------------------------------------------------------------------- -->
+
+<div id="container" align="center">             <!-- División html para el selector de cámara -->
+    <div class="select">                        <!-- Clase selector -->
+        <label for="videoSource">Video source: </label><select id="videoSource"></select>    <!-- El selector en sí -->
+    </div>
+</div>
+
+<!-- ---------------------------------------------------------------------------------------- -->
+<!-- -----------------------Elementos html para colocar puntajes----------------------------- -->
+<!-- ---------------------------------------------------------------------------------------- -->
+
+
+<!-- ---------------------------------------------------------------------------------------- -->
+<!-- ---------Elementos html del canvas (donde se coloca el juego) y el video la webcam------ -->
+<!-- ---------------------------------------------------------------------------------------- -->
+<div align="center">                                                                <!-- División y Centrado -->
+    <div>                                                                           <!-- División -->
+    <canvas id="canvas" class="d-none"></canvas>                                    <!-- Elemento canvas donde pintar -->
+    </div>
+    <video id="video" playsinline autoplay width="640" height="480"></video>        <!-- Elemento para el video de la webcam -->
+</div>
+
+<div align="center">                                                                <!-- División y Centrado -->
+    <div>                                                                           <!-- División -->
+    <canvas id="canvas2" class="d-none"></canvas>                                    <!-- Elemento canvas donde pintar -->
+    </div>
+</div>
+
+<!-- ---------------------------------------------------------------------------------------- -->
+<!-- -----------------------Librerías y Scripts de Javascript a usar------------------------- -->
+<!-- ---------------------------------------------------------------------------------------- -->
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>  <!-- Librería para la cámara web -->
+<script src="https://docs.opencv.org/3.4.0/opencv.js"></script>             <!-- OpenCV -->
+<script src="https://docs.opencv.org/3.4/utils.js"></script>                <!-- OpenCV -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js" type="text/javascript"></script> <!-- Para el panel de control -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+<script src="camselect.js" async></script>                                  <!-- Script con la lógica de selección de cámara -->
+<script src="main.js"></script>                                  <!-- Script con la lógica de selección de cámara -->
+</body>
+</html>
