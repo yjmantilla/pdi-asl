@@ -65,15 +65,15 @@ let cfg={                                                   // Diccionario que d
 // Notice there is no 'import' statement. 'tf' is available on the index-page
 // because of the script tag above.''
 async function f1() {
-    let model2 = await tf.loadLayersModel('model_tfjs\model.json');
+    let model2 = await tf.loadLayersModel('https://raw.githubusercontent.com/yjmantilla/pdi-asl/main/model_tfjs/model.json');
     //console.log(x); // 10
     return model2
     }
     
 f1().then(model=>{
 
-
-
+label_mapping = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'del', 'nothing', 'space']
+// index in the array is the integer associated with it, ie label_mapping[i]
 //-----------------------------------------------------------------------------------------------
 //-------Configuración de la Interfaz de Parámetros del Juego------------------------------------
 //-----------------------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ cfgFolder.add(cfg, 'segmentation',['true','false']);                            
 //-----------------------------------------------------------------------------------------------
 //-------Inicialización de Variables de OPENCV---------------------------------------------------
 //-----------------------------------------------------------------------------------------------
-const FPS = 30;                                                         // Frames por segundo a usar
+const FPS = 1;                                                         // Frames por segundo a usar
 let cap = new cv.VideoCapture(video);                                   // Instancia de la clase de captura de video de opencv
 let streaming = true;                                                   // Booleano que indica si la camara esta transmitiendo video
 let frame = new cv.Mat(video.height, video.width, cv.CV_8UC4);          // Reserva de una matriz frame que es la captura de la imagen de un video en un tiempo especifico
@@ -116,7 +116,9 @@ function draw(frame,canvas='canvas'){
 //-----------------------------------------------------------------------------------------------
 //-------Procesamiento de la imagen y su influencia en el juego----------------------------------
 //-----------------------------------------------------------------------------------------------
-
+let startTime = new Date();
+let timeDiff = new Date();
+let endTime = new Date();
 function processVideo() {                               // Función que realiza todo el procesamiento
     try 
     {
@@ -130,12 +132,17 @@ function processVideo() {                               // Función que realiza 
             resizedFrame.delete();
             return;
         }
-
+        endTime = new Date();
+        timeDiff = endTime - startTime; //in ms
+        // strip the ms
+        timeDiff /= 1000;
+      
 //-------Obtención de la Imagen Cruda------------------------------------------------------------
 
         cap.read(frame);                                        // Lectura del frame de la camara
-        cv.flip(frame, frame, 1);                               // Giro en espejo del fondo, esto es para que concuerde 
+        // cv.flip(frame, frame, 1);                               // Giro en espejo del fondo, esto es para que concuerde 
                                                                 // de forma intuitiva la imagen mostrada con la posición del usuario
+    if (timeDiff > 1/FPS){
 
 //-------Conversion de RGBA a RGB----------------------------------------------------------------
 
@@ -147,10 +154,22 @@ function processVideo() {                               // Función que realiza 
         draw(resizedFrame,'canvas2')
         
         let example = tf.browser.fromPixels(canvas2);  // for example
-        console.log(example)
-        let prediction = model.predict(example);
-        console.log(prediction)
+        xs = tf.expandDims(example)
+        //console.log(example)
+        let prediction = model.predict(xs);
+        prediction = prediction.as1D()
+        let values = prediction.dataSync();
+        let arr = Array.from(values);
+        let lab = prediction.argMax()
+        lab = lab.dataSync();
+        lab = lab[0]
+        document.getElementById('label').innerHTML=label_mapping[lab];
+
+        console.log(lab)
+        startTime = new Date()
+        }
         requestAnimationFrame(processVideo);                        // Pasa a procesar el siguiente frame cuando el browser este listo
+
     } 
     catch (err) {                                                   // Esto es un mecanismo de control de errores
         console.log(err);                                           // Imprimir el error en consola
